@@ -189,7 +189,7 @@
         public function insertTourExcluded($tour_id, $list) {
           $sql = "INSERT INTO tour_excluded(tour_id, excluded) VALUES(?, ?)";
           $stmt = $this->dbcon->prepare($sql);
-          $stmt->bind_param("is", $id, $excluded);
+          $stmt->bind_param("is", $tour_id, $excluded);
           foreach ($list as $excluded) {
             if (!$stmt->execute()) {
               $stmt->close();
