@@ -53,7 +53,8 @@
             throw new \Exception("48: Tour insertion failed!", 1);
         }
 
-        $insertTourImages = $tour->insertTourImages($id, $_POST['images']);
+        $imageArray = json_decode($_POST['images'], true)['image_urls'];
+        $insertTourImages = $tour->insertTourImages($id, $imageArray);
         if ($insertTourImages <= 0) {
             throw new \Exception("60: Tour insertion failed!", 1);
         }

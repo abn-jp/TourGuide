@@ -13,18 +13,18 @@
         public function getATourDetails($tourid) {
           $sql = "
             SELECT
-              t.title,
-              t.description,
-              t.price,
-              t.price_type,
-              t.overview,
-              t.remarks,
-              t.cancel_policy,
-              c.name AS category,
-              a.name AS area
-            FROM tour_details AS t
-            INNER JOIN category AS c ON c.id = t.id
-            INNER JOIN area AS a ON a.id = t.id
+                t.title,
+                t.description,
+                t.price,
+                t.price_type,
+                t.overview,
+                t.remarks,
+                t.cancel_policy,
+                c.name AS category,
+                a.name AS area
+            FROM tour_details t
+            INNER JOIN category c ON t.category_id = c.id
+            INNER JOIN area a ON t.area_id = a.id
             WHERE t.id = ?
           ";
           $stmt = $this->dbcon->prepare($sql);
