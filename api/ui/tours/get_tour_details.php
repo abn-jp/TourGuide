@@ -97,24 +97,21 @@
             $row['highlights'] = $highlightsArray;
 
 
-            // if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $row['overview'])) {
-            //     $row['overview'] = base64_decode($row['overview']);
-            // } else {
-            //     $row['overview'] = $row['overview'];
-            // }
-            // if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $row['cancel_policy'])) {
-            //     $row['cancel_policy'] = base64_decode($row['cancel_policy']);
-            // } else {
-            //     $row['cancel_policy'] = $row['cancel_policy'];
-            // }
-            // if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $row['remarks'])) {
-            //     $row['remarks'] = base64_decode($row['remarks']);
-            // } else {
-            //     $row['remarks'] = $row['remarks'];
-            // }
-            $row['overview'] = $row['overview'];
-            $row['remarks'] = $row['remarks'];
-            $row['cancel_policy'] = $row['cancel_policy'];
+            if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $row['overview'])) {
+                $row['overview'] = base64_decode($row['overview']);
+            } else {
+                $row['overview'] = $row['overview'];
+            }
+            if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $row['cancel_policy'])) {
+                $row['cancel_policy'] = base64_decode($row['cancel_policy']);
+            } else {
+                $row['cancel_policy'] = $row['cancel_policy'];
+            }
+            if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $row['remarks'])) {
+                $row['remarks'] = base64_decode($row['remarks']);
+            } else {
+                $row['remarks'] = $row['remarks'];
+            }
 
             $data = $row;
         }

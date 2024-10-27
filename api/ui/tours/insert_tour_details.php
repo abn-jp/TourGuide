@@ -8,7 +8,7 @@
 		exit();
 	}
 
-    if(!isset($_POST['id']) || !isset($_POST['title']) || !isset($_POST['price']) || !isset($_POST['price_type']) || !isset($_POST['category_id']) || !isset($_POST['description']) || !isset($_POST['area_id']) || !isset($_POST['overview']) || !isset($_POST['remarks']) || !isset($_POST['cancel_policy'])) {
+    if(!isset($_POST['id']) || !isset($_POST['title']) || !isset($_POST['price']) || !isset($_POST['price_type']) || !isset($_POST['category_id']) || !isset($_POST['description']) || !isset($_POST['area_id']) || !isset($_POST['overview']) || !isset($_POST['remarks']) || !isset($_POST['cancel_policy']) || !isset($_POST['images'])) {
         $response['error'] = true;
         $response['message'] = "Required field missing!";
         echo json_encode($response);
@@ -51,6 +51,27 @@
 
         if ($tourInsertResult <= 0) {
             throw new \Exception("48: Tour insertion failed!", 1);
+        }
+
+        $insertTourImages = $tour->insertTourImages($id, $_POST['images']);
+        if ($insertTourImages <= 0) {
+            throw new \Exception("60: Tour insertion failed!", 1);
+        }
+
+        if (isset($_POST['itinerary'])) {
+            $tour ->insertTourItinerary($id, $_POST['itinerary']);
+        }
+
+        if (isset($_POST['excluded'])) {
+            $tour ->insertTourExcluded($id, $_POST['excluded']);
+        }
+
+        if (isset($_POST['included'])) {
+            $tour ->insertTourIncluded($id, $_POST['included']);
+        }
+
+        if (isset($_POST['highlights'])) {
+            $tour ->insertTourHighlights($id, $_POST['highlights']);
         }
 
         if ($dbcon->commit()) {

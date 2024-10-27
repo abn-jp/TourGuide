@@ -134,96 +134,87 @@
             }
         }
 
+        // insert tour images
+        public function insertTourImages($tour_id, $images) {
+          $sql = "INSERT INTO tour_images(tour_id, image_url)
+              VALUES(?, ?)";
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("is", $tour_id, $image_url);
+
+          // Execute the prepared statement for each image URL
+          foreach ($images as $image_url) {
+            if (!$stmt->execute()) {
+                $stmt->close();
+                return -1;
+            }
+          }
+
+        $stmt->close();
+        return 1;
+      }
+
         // insert a tour itinerary info
-        public function insertTourItinerary($list) {
+        public function insertTourItinerary($tour_id, $list) {
           $sql = "INSERT INTO tour_itinerary(tour_id, itinerary) VALUES(?, ?)";
           $stmt = $this->dbcon->prepare($sql);
-          $stmt->bind_param("is", $id, $itinerary);
-          foreach ($list as $item) {
-            $id = $item['id'];
-            $itinerary = $item['itinerary'];
-
-            $stmt->execute();
+          $stmt->bind_param("is", $tour_id, $itinerary);
+          foreach ($list as $itinerary) {
+            if (!$stmt->execute()) {
+                $stmt->close();
+                return -1;
+            }
           }
-
-          $affectedRows = $stmt->affected_rows;
 
           $stmt->close();
-
-          if ($affectedRows > 0) {
-            return 1;
-          } else {
-            return -1;
-          }
+          return 1;
         }
 
         // insert a tour included info
-        public function insertTourIncluded($list) {
+        public function insertTourIncluded($tour_id, $list) {
           $sql = "INSERT INTO tour_included(tour_id, included) VALUES(?, ?)";
           $stmt = $this->dbcon->prepare($sql);
-          $stmt->bind_param("is", $id, $included);
-          foreach ($list as $item) {
-            $id = $item['id'];
-            $included = $item['included'];
-
-            $stmt->execute();
+          $stmt->bind_param("is", $tour_id, $included);
+          foreach ($list as $included) {
+            if (!$stmt->execute()) {
+                $stmt->close();
+                return -1;
+            }
           }
-
-          $affectedRows = $stmt->affected_rows;
 
           $stmt->close();
-
-          if ($affectedRows > 0) {
-            return 1;
-          } else {
-            return -1;
-          }
+          return 1;
         }
 
         // insert a tour excluded list info
-        public function insertTourExcluded($list) {
+        public function insertTourExcluded($tour_id, $list) {
           $sql = "INSERT INTO tour_excluded(tour_id, excluded) VALUES(?, ?)";
           $stmt = $this->dbcon->prepare($sql);
           $stmt->bind_param("is", $id, $excluded);
-          foreach ($list as $item) {
-            $id = $item['id'];
-            $excluded = $item['excluded'];
-
-            $stmt->execute();
+          foreach ($list as $excluded) {
+            if (!$stmt->execute()) {
+              $stmt->close();
+              return -1;
+            }
           }
-
-          $affectedRows = $stmt->affected_rows;
 
           $stmt->close();
-
-          if ($affectedRows > 0) {
-            return 1;
-          } else {
-            return -1;
-          }
+          return 1;
         }
 
         // insert a tour highlights list info
-        public function insertTourHighlights($list) {
+        public function insertTourHighlights($tour_id, $list) {
           $sql = "INSERT INTO tour_highlights(tour_id, highlights) VALUES(?, ?)";
           $stmt = $this->dbcon->prepare($sql);
-          $stmt->bind_param("is", $id, $highlights);
-          foreach ($list as $item) {
-            $id = $item['id'];
-            $highlights = $item['highlights'];
-
-            $stmt->execute();
+          $stmt->bind_param("is", $tour_id, $highlights);
+          foreach ($list as $highlights) {
+            if (!$stmt->execute()) {
+              $stmt->close();
+              return -1;
+            }
           }
-
-          $affectedRows = $stmt->affected_rows;
 
           $stmt->close();
-
-          if ($affectedRows > 0) {
-            return 1;
-          } else {
-            return -1;
-          }
+          return 1;
         }
     }
  ?>
