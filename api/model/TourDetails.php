@@ -11,7 +11,19 @@
 
         // get a tour details info
         public function getATourDetails($tourid) {
-          $sql = "SELECT * FROM tour_details WHERE id = ?";
+          $sql = "
+            SELECT
+              t.title,
+              t.description,
+              t.price,
+              t.price_type,
+              c.name AS category,
+              a.name AS area
+            FROM tour_details AS t
+            INNER JOIN category AS c ON c.id = t.id
+            INNER JOIN area AS a ON a.id = t.id
+            WHERE t.id = ?
+          ";
           $stmt = $this->dbcon->prepare($sql);
           $stmt->bind_param("i", $tourid);
           $stmt->execute();
@@ -38,6 +50,58 @@
         // get images of a tour
         public function getATourImages($tourid) {
           $sql = "SELECT * FROM tour_images WHERE tour_id = ?";
+
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("i", $tourid);
+          $stmt->execute();
+          $result = $stmt->get_result();
+          $stmt->close();
+
+          return $result;
+        }
+
+        // get itinerary of a tour
+        public function getATourItinerary($tourid) {
+          $sql = "SELECT * FROM tour_itinerary WHERE tour_id = ?";
+
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("i", $tourid);
+          $stmt->execute();
+          $result = $stmt->get_result();
+          $stmt->close();
+
+          return $result;
+        }
+
+        // get included items of a tour
+        public function getATourIncludedItems($tourid) {
+          $sql = "SELECT * FROM tour_included WHERE tour_id = ?";
+
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("i", $tourid);
+          $stmt->execute();
+          $result = $stmt->get_result();
+          $stmt->close();
+
+          return $result;
+        }
+
+        // get excluded items of a tour
+        public function getATourExcludedItems($tourid) {
+          $sql = "SELECT * FROM tour_excluded WHERE tour_id = ?";
+
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("i", $tourid);
+          $stmt->execute();
+          $result = $stmt->get_result();
+          $stmt->close();
+
+          return $result;
+        }
+
+        // get highlights of a tour
+        public function getATourHighlights($tourid) {
+          $sql = "SELECT * FROM tour_highlights WHERE tour_id = ?";
 
           $stmt = $this->dbcon->prepare($sql);
           $stmt->bind_param("i", $tourid);
@@ -116,7 +180,7 @@
 
         // insert a tour excluded list info
         public function insertTourExcluded($list) {
-          $sql = "INSERT INTO benefit_excluded(tour_id, excluded) VALUES(?, ?)";
+          $sql = "INSERT INTO tour_excluded(tour_id, excluded) VALUES(?, ?)";
           $stmt = $this->dbcon->prepare($sql);
           $stmt->bind_param("is", $id, $excluded);
           foreach ($list as $item) {

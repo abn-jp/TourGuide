@@ -50,8 +50,52 @@
                     $imageArray[] = $imageRow['image_url'];
                 }
             }
-
             $row['images'] = $imageArray;
+
+            // Tour included items
+            $included = $tour->getATourIncludedItems($id);
+            $includedArray = array();
+
+            if ($included->num_rows > 0) {
+                while ($includedRow = $included->fetch_array(MYSQLI_ASSOC)) {
+                    $includedArray[] = $includedRow['included'];
+                }
+            }
+            $row['included'] = $includedArray;
+
+            // Tour excluded items
+            $excluded = $tour->getATourExcludedItems($id);
+            $excludedArray = array();
+
+            if ($excluded->num_rows > 0) {
+                while ($excludedRow = $excluded->fetch_array(MYSQLI_ASSOC)) {
+                    $excludedArray[] = $excludedRow['excluded'];
+                }
+            }
+            $row['excluded'] = $excludedArray;
+
+            // Tour itinerary
+            $itinerary = $tour->getATourItinerary($id);
+            $itineraryArray = array();
+
+            if ($itinerary->num_rows > 0) {
+                while ($itineraryRow = $itinerary->fetch_array(MYSQLI_ASSOC)) {
+                    $itineraryArray[] = $itineraryRow['itinerary'];
+                }
+            }
+            $row['itinerary'] = $itineraryArray;
+
+            // Tour highlights
+            $highlights = $tour->getATourHighlights($id);
+            $highlightsArray = array();
+
+            if ($highlights->num_rows > 0) {
+                while ($highlightsRow = $highlights->fetch_array(MYSQLI_ASSOC)) {
+                    $highlightsArray[] = $highlightsRow['highlights'];
+                }
+            }
+            $row['highlights'] = $highlightsArray;
+
             $tourArray[] = $row;
           }
 
