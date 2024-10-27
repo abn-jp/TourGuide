@@ -36,7 +36,7 @@
 
     $tourResult = $tour->getATourDetails($id);
 
-    $tourArray = array();
+    $data = null;
 
     if ($tourResult->num_rows > 0) {
           $response['error'] = false;
@@ -96,10 +96,10 @@
             }
             $row['highlights'] = $highlightsArray;
 
-            $tourArray[] = $row;
+            $data = $row;
           }
 
-          $response['data'] = $toursArray;
+          $response['data'] = $data;
     } else {
           $response['error'] = true;
           $response['message'] = "No tours found!";
