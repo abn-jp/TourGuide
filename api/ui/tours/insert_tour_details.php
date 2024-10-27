@@ -8,18 +8,23 @@
 		exit();
 	}
 
-    if(!isset($_POST['id']) || !isset($_POST['title']) || !isset($_POST['price']) || !isset($_POST['category_id']) || !isset($_POST['description'])) {
+    if(!isset($_POST['id']) || !isset($_POST['title']) || !isset($_POST['price']) || !isset($_POST['price_type']) || !isset($_POST['category_id']) || !isset($_POST['description']) || !isset($_POST['area_id']) || !isset($_POST['overview']) || !isset($_POST['remarks']) || !isset($_POST['cancel_policy'])) {
         $response['error'] = true;
         $response['message'] = "Required field missing!";
         echo json_encode($response);
         exit();
     }
 
-    $id = trim(strip_tags($_POST['id']));
-    $title = trim(strip_tags($_POST['title']));
-    $price = trim(strip_tags($_POST['price']));
-    $category_id = trim(strip_tags($_POST['category_id']));
-    $description = trim(strip_tags($_POST['description']));
+    $id = $_POST['id'];
+    $title = $_POST['title'];
+    $price = $_POST['price'];
+    $price_type = $_POST['price_type'];
+    $category_id = $_POST['category_id'];
+    $description = $_POST['description'];
+    $area_id = $_POST['area_id'];
+    $overview = base64_encode($_POST['overview']);
+    $remarks = base64_encode($_POST['remarks']);
+    $cancel_policy = base64_encode($_POST['cancel_policy']);
 
 
     $base_path = dirname(dirname(dirname(__FILE__)));
@@ -42,7 +47,7 @@
     try {
         $dbcon->begin_transaction();
 
-        $tourInsertResult = $tour->insertATourInfo($id, $title, $price, $category_id, $description);
+        $tourInsertResult = $tour->insertATourInfo($id, $title, $price, $price_type, $category_id, $description, $area_id, $overview, $remarks, $cancel_policy);
 
         if ($tourInsertResult <= 0) {
             throw new \Exception("48: Tour insertion failed!", 1);

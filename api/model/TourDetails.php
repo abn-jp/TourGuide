@@ -17,6 +17,9 @@
               t.description,
               t.price,
               t.price_type,
+              t.overview,
+              t.remarks,
+              t.cancel_policy,
               c.name AS category,
               a.name AS area
             FROM tour_details AS t
@@ -113,11 +116,11 @@
         }
 
         // insert a tour details info
-        public function insertATourInfo($id, $title, $price, $categoryId, $description) {
-            $sql = "INSERT INTO tour_details(id, title, price, category_id, description)
-                VALUES(?, ?, ?, ?, ?)";
+        public function insertATourInfo($id, $title, $price, $price_type, $categoryId, $description, $area_id, $overview, $remarks, $cancel_policy) {
+            $sql = "INSERT INTO tour_details(id, title, price, price_type, category_id, description, area_id, overview, remarks, cancel_policy)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->dbcon->prepare($sql);
-            $stmt->bind_param("issss", $id, $title, $price, $categoryId, $description);
+            $stmt->bind_param("isssisisss", $id, $title, $price, $price_type, $categoryId, $description, $area_id, $overview, $remarks, $cancel_policy);
             $stmt->execute();
 
             $affectedRows = $stmt->affected_rows;
@@ -125,8 +128,7 @@
             $stmt->close();
 
             if ($affectedRows > 0) {
-              $lastInsertId = $this->dbcon->insert_id;
-              return $lastInsertId;
+              return 1;
             } else {
               return -1;
             }
