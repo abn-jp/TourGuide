@@ -53,25 +53,30 @@
             throw new \Exception("48: Tour insertion failed!", 1);
         }
 
-        $insertTourImages = $tour->insertTourImages($id, $_POST['images']);
+        $imageArray = json_decode($_POST['images'], true)['image_urls'];
+        $insertTourImages = $tour->insertTourImages($id, $imageArray);
         if ($insertTourImages <= 0) {
             throw new \Exception("60: Tour insertion failed!", 1);
         }
 
         if (isset($_POST['itinerary'])) {
-            $tour ->insertTourItinerary($id, $_POST['itinerary']);
+            $itineraryArray = json_decode($_POST['itinerary'], true)['itinerary_list'];
+            $tour ->insertTourItinerary($id, $itineraryArray);
         }
 
         if (isset($_POST['excluded'])) {
-            $tour ->insertTourExcluded($id, $_POST['excluded']);
+            $list = json_decode($_POST['excluded'], true)['excluded_list'];
+            $tour ->insertTourExcluded($id, $list);
         }
 
         if (isset($_POST['included'])) {
-            $tour ->insertTourIncluded($id, $_POST['included']);
+            $list = json_decode($_POST['included'], true)['included_list'];
+            $tour ->insertTourIncluded($id, $list);
         }
 
         if (isset($_POST['highlights'])) {
-            $tour ->insertTourHighlights($id, $_POST['highlights']);
+            $list = json_decode($_POST['highlights'], true)['highlights_list'];
+            $tour ->insertTourHighlights($id, $list);
         }
 
         if ($dbcon->commit()) {
