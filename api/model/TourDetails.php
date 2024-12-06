@@ -149,9 +149,9 @@
             }
           }
 
-        $stmt->close();
-        return 1;
-      }
+          $stmt->close();
+          return 1;
+        }
 
         // insert a tour itinerary info
         public function insertTourItinerary($tour_id, $list) {
@@ -204,6 +204,108 @@
         // insert a tour highlights list info
         public function insertTourHighlights($tour_id, $list) {
           $sql = "INSERT INTO tour_highlights(tour_id, highlights) VALUES(?, ?)";
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("is", $tour_id, $highlights);
+          foreach ($list as $highlights) {
+            if (!$stmt->execute()) {
+              $stmt->close();
+              return -1;
+            }
+          }
+
+          $stmt->close();
+          return 1;
+        }
+
+        // update a tour details info
+        public function updateATourInfo($id, $title, $price, $price_type, $categoryId, $description, $area_id, $overview, $remarks, $cancel_policy) {
+          $sql = "REPLACE INTO tour_details(id, title, price, price_type, category_id, description, area_id, overview, remarks, cancel_policy)
+              VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("isssisisss", $id, $title, $price, $price_type, $categoryId, $description, $area_id, $overview, $remarks, $cancel_policy);
+          $stmt->execute();
+
+          $affectedRows = $stmt->affected_rows;
+
+          $stmt->close();
+
+          if ($affectedRows > 0) {
+            return 1;
+          } else {
+            return -1;
+          }
+        }
+
+        // update tour images
+        public function updateTourImages($tour_id, $images) {
+          $sql = "REPLACE INTO tour_images(tour_id, image_url)
+              VALUES(?, ?)";
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("is", $tour_id, $image_url);
+
+          // Execute the prepared statement for each image URL
+          foreach ($images as $image_url) {
+            if (!$stmt->execute()) {
+                $stmt->close();
+                return -1;
+            }
+          }
+
+          $stmt->close();
+          return 1;
+        }
+
+        // update a tour itinerary info
+        public function updateTourItinerary($tour_id, $list) {
+          $sql = "REPLACE INTO tour_itinerary(tour_id, itinerary) VALUES(?, ?)";
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("is", $tour_id, $itinerary);
+          foreach ($list as $itinerary) {
+            if (!$stmt->execute()) {
+                $stmt->close();
+                return -1;
+            }
+          }
+
+          $stmt->close();
+          return 1;
+        }
+
+        // update a tour included info
+        public function updateTourIncluded($tour_id, $list) {
+          $sql = "REPLACE INTO tour_included(tour_id, included) VALUES(?, ?)";
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("is", $tour_id, $included);
+          foreach ($list as $included) {
+            if (!$stmt->execute()) {
+                $stmt->close();
+                return -1;
+            }
+          }
+
+          $stmt->close();
+          return 1;
+        }
+
+        // update a tour excluded list info
+        public function updateTourExcluded($tour_id, $list) {
+          $sql = "REPLACE INTO tour_excluded(tour_id, excluded) VALUES(?, ?)";
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->bind_param("is", $tour_id, $excluded);
+          foreach ($list as $excluded) {
+            if (!$stmt->execute()) {
+              $stmt->close();
+              return -1;
+            }
+          }
+
+          $stmt->close();
+          return 1;
+        }
+
+        // update a tour highlights list info
+        public function updateTourHighlights($tour_id, $list) {
+          $sql = "REPLACE INTO tour_highlights(tour_id, highlights) VALUES(?, ?)";
           $stmt = $this->dbcon->prepare($sql);
           $stmt->bind_param("is", $tour_id, $highlights);
           foreach ($list as $highlights) {
