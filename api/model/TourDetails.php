@@ -318,5 +318,24 @@
           $stmt->close();
           return 1;
         }
+
+        public function clearDatabase() {
+          $sql = "EXEC sp_MSForEachTable 'DISABLE TRIGGER ALL ON ?'
+                  GO
+                  EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
+                  GO
+                  EXEC sp_MSForEachTable 'SET QUOTED_IDENTIFIER ON; DELETE FROM ?'
+                  GO
+                  EXEC sp_MSForEachTable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'
+                  GO
+                  EXEC sp_MSForEachTable 'ENABLE TRIGGER ALL ON ?'
+                  GO"
+          ;
+          $stmt = $this->dbcon->prepare($sql);
+          $stmt->execute();
+
+          $stmt->close();
+          return 1;
+        }
     }
  ?>
