@@ -117,33 +117,7 @@
 					<hr>
 
 					<!-- Highlights Start -->
-					<div class="row">
-						<div class="col-lg-3">
-							<h3>Highlights</h3>
-						</div>
-						<div class="col-lg-9">
-
-							<div class="row">
-								<div class="col-md-6">
-									<ul class="list_ok">
-										<li>Lorem ipsum dolor sit amet</li>
-										<li>No scripta electram necessitatibus sit</li>
-										<li>Quidam percipitur instructior an eum</li>
-										<li>Ut est saepe munere ceteros</li>
-										<li>No scripta electram necessitatibus sit</li>
-										<li>Quidam percipitur instructior an eum</li>
-									</ul>
-								</div>
-								<div class="col-md-6">
-									<ul class="list_ok">
-										<li>Lorem ipsum dolor sit amet</li>
-										<li>No scripta electram necessitatibus sit</li>
-										<li>Quidam percipitur instructior an eum</li>
-										<li>No scripta electram necessitatibus sit</li>
-									</ul>
-								</div>
-							</div>
-						</div>
+					<div class="row" id="highlights">
 					</div>
 					<hr>
 					<!-- Highlights End -->
@@ -164,73 +138,19 @@
 					<!-- Overview End -->
 
 					<!-- Itinerary Start -->
-					<div class="row">
-						<div class="col-lg-3">
-							<h3>Itinerary</h3>
-						</div>
-						<div class="col-lg-9">
-
-							<div class="row">
-								<div class="col-md-6">
-									<ul class="list_ok">
-										<li>Lorem ipsum dolor sit amet</li>
-										<li>No scripta electram necessitatibus sit</li>
-										<li>Quidam percipitur instructior an eum</li>
-										<li>Ut est saepe munere ceteros</li>
-										<li>No scripta electram necessitatibus sit</li>
-										<li>Quidam percipitur instructior an eum</li>
-									</ul>
-								</div>
-							</div>
-						</div>
+					<div class="row" id="itinerary">
 					</div>
 					<hr>
 					<!-- Itinerary End -->
 
 					<!-- Included Start -->
-					<div class="row">
-						<div class="col-lg-3">
-							<h3>Included</h3>
-						</div>
-						<div class="col-lg-9">
-
-							<div class="row">
-								<div class="col-md-6">
-									<ul class="list_ok">
-										<li>Lorem ipsum dolor sit amet</li>
-										<li>No scripta electram necessitatibus sit</li>
-										<li>Quidam percipitur instructior an eum</li>
-										<li>Ut est saepe munere ceteros</li>
-										<li>No scripta electram necessitatibus sit</li>
-										<li>Quidam percipitur instructior an eum</li>
-									</ul>
-								</div>
-							</div>
-						</div>
+					<div class="row" id="included">
 					</div>
 					<hr>
 					<!-- Included End -->
 
 					<!-- Not Included Start -->
-					<div class="row">
-						<div class="col-lg-3">
-							<h3>Not Included</h3>
-						</div>
-						<div class="col-lg-9">
-
-							<div class="row">
-								<div class="col-md-6">
-									<ul class="list_ok">
-										<li>Lorem ipsum dolor sit amet</li>
-										<li>No scripta electram necessitatibus sit</li>
-										<li>Quidam percipitur instructior an eum</li>
-										<li>Ut est saepe munere ceteros</li>
-										<li>No scripta electram necessitatibus sit</li>
-										<li>Quidam percipitur instructior an eum</li>
-									</ul>
-								</div>
-							</div>
-						</div>
+					<div class="row" id="excluded">
 					</div>
 					<hr>
 					<!-- Not Included End -->
@@ -722,9 +642,6 @@
 						thumbnailHtml += `<img alt="Image" class="sp-thumbnail" src="${image}">`;
 					});
 
-					document.getElementById('image-gallery').innerHTML = imageHtml;
-					document.getElementById('image-gallery-thumbnails').innerHTML = thumbnailHtml;
-					
 					document.getElementById('title').innerHTML = data.title;
 					document.getElementById('area').innerHTML = data.area;
 					document.getElementById('category').innerHTML = data.category;
@@ -735,6 +652,14 @@
 
 					const priceHtml = `${data.price_type} <sup>$</sup><span >${data.price}</span>`;
 					document.getElementById('price_single_main').innerHTML = priceHtml;
+
+					document.getElementById('image-gallery').innerHTML = imageHtml;
+					document.getElementById('image-gallery-thumbnails').innerHTML = thumbnailHtml;
+
+					addHtmlForItems('highlights', 'Highlights', data.highlights);
+					addHtmlForItems('itinerary', 'Itinerary', data.itinerary);
+					addHtmlForItems('included', 'Included', data.included);
+					addHtmlForItems('excluded', 'Not Included', data.excluded);
 
 					// Load JS script dynamically
 					loadJS('js/jquery.sliderPro.min.js');
@@ -760,6 +685,34 @@
                 console.error('Error fetching data:', error);
             }
         }
+
+		function addHtmlForItems(htmlId, title, itemList) {
+			if (Array.isArray(itemList) && itemList.length != 0) {
+				let listItems = '';
+
+				itemList.forEach(item => {
+					listItems += `<li>
+						${item}
+					</li>`;
+				});
+
+				let itemHtml = `
+					<div class="col-lg-3">
+						<h3>${title}</h3>
+					</div>
+					<div class="col-lg-9">
+						<div class="row">
+							<div class="col-md-12">
+								<ul class="list_ok">
+									${listItems}
+								</ul>
+							</div>
+						</div>
+					</div>
+				`;
+				document.getElementById(htmlId).innerHTML = itemHtml;
+			}
+		}
 
         window.onload = fetchTourDetails;
 
